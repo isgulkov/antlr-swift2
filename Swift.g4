@@ -23,4 +23,6 @@ FLOAT : DIGIT+ ('.' DIGIT+)? ;
 
 DIGIT : [0-9] ;
 
+NEWLINE : ('\r' | '\n')+ ;
 
+WS : ( '\t' | ' ' | '\r' | '\n' )+ -> channel(HIDDEN) ;

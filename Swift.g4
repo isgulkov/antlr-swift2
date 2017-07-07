@@ -14,5 +14,13 @@ options {
  Lexer rules
  */
 
-//
+ID : [a-zA-Z][a-zA-Z0-9]* ;
+
+STRING : '"' ( ~('\r' | '\n' | '"') | '\\"' )* '"' ;
+
+INT : DIGIT+ ;
+FLOAT : DIGIT+ ('.' DIGIT+)? ;
+
+DIGIT : [0-9] ;
+
 

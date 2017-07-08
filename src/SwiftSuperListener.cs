@@ -304,7 +304,7 @@ namespace SwiftTranslator
 				PrintErrorAndExit(1001, "Range not specified in a for-loop statement");
 			}
 
-			OutLine($"foreach(int i in {PrintExpression(context.rangeExpr())}) {{");
+			OutLine($"foreach(int {EscapeId(context.ID().GetText())} in {PrintExpression(context.rangeExpr())}) {{");
 		}
 
 		public override void ExitLoopStmt(SwiftParser.LoopStmtContext context)

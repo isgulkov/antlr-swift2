@@ -9,7 +9,14 @@ options {
  */
 
 expression
+    : additiveExpr
+    ;
+
+additiveExpr
     : multiplicativeExpr
+    | additiveExpr '-' multiplicativeExpr
+    | additiveExpr '+' multiplicativeExpr
+    | additiveExpr '^' multiplicativeExpr
     ;
 
 multiplicativeExpr

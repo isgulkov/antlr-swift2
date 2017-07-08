@@ -9,7 +9,12 @@ options {
  */
 
 expression
+    : assignmentExpr
+    ;
+
+assignmentExpr
     : tertiaryExpr
+    | tertiaryExpr '=' assignmentExpr
     ;
 
 tertiaryExpr // right-associative

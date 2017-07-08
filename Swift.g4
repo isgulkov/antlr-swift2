@@ -8,6 +8,10 @@ options {
  Parser rules
  */
 
+file
+    : statements? EOF
+    ;
+
 codeBlock
     : '{' statements? '}'
     | statement

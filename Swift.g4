@@ -12,6 +12,7 @@ file
     : statements? EOF
     ;
 
+// TODO: find a way to reject multiple statements on one line not separated by a semicolon
 codeBlock
     : '{' statements? '}'
     | statement

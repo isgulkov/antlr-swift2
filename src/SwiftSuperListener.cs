@@ -42,6 +42,24 @@ namespace SwiftTranslator
             OutLine("using System;");
 			OutLine("");
 			OutLine("class Program {");
+
+            OutLine("static bool CompareWithTypes(object one, object another)");
+			OutLine("{");
+			OutLine("if(one is int && another is int) {");
+			OutLine("return (int)one == (int)another");
+			OutLine("}");
+			OutLine("else if(one is double && another is double) {");
+			OutLine("return (double)one == (double)another");
+			OutLine("}");
+			OutLine("else if(one is bool && another is bool) {");
+			OutLine("return (bool)one == (bool)another");
+			OutLine("}");
+			OutLine("else {");
+			OutLine("return false;");
+			OutLine("}");
+			OutLine("}");
+
+
 			OutLine("public static void Main() {");
 		}
 
@@ -97,22 +115,41 @@ namespace SwiftTranslator
 
 		static string PrintExpression(SwiftParser.ConjunctiveExprContext context)
 		{
-
+			if(context.RuleIndex == 0) {
+				return PrintExpression(context.comparativeExpr());
+			}
+			else {
+				return PrintExpression(context.conjunctiveExpr()) + "&&" + PrintExpression(context.comparativeExpr());
+			}
 		}
 
 		static string PrintExpression(SwiftParser.ComparativeExprContext context)
 		{
-
+			if(context.RuleIndex == 0) {
+				return PrintExpression(context.rangeExpr()[0]);
+			}
+			else if(context.children[1].GetText() == "===") {
+				return $"CompareWithTypes({PrintExpression(context.rangeExpr()[0])}," +
+					$"{PrintExpression(context.rangeExpr()[1])})";
+			}
+			else if(context.children[1].GetText() == "!==") {
+				return $"!CompareWithTypes({PrintExpression(context.rangeExpr()[0])}," +
+					$"{PrintExpression(context.rangeExpr()[1])})";
+			}
+			else {
+				return PrintExpression(context.rangeExpr()[0]) + context.children[1].GetText() + PrintExpression(context.rangeExpr()[1]);
+			}
 		}
 
 		static string PrintExpression(SwiftParser.RangeExprContext context)
 		{
-
-		}
-
-		static string PrintExpression(SwiftParser.PrimaryExprContext context)
-		{
-
+			if(context.RuleIndex == 0) {
+				return PrintExpression(context.additiveExpr()[0]);
+			}
+			else {
+				return $"Enumerable.Range({PrintExpression(context.additiveExpr()[0])}," +
+					$"{PrintExpression(context.additiveExpr()[1])})";
+			}
 		}
 
 		static string PrintExpression(SwiftParser.MultiplicativeExprContext context)
@@ -126,6 +163,11 @@ namespace SwiftTranslator
 		}
 
 		static string PrintExpression(SwiftParser.UnaryExprContext context)
+		{
+
+		}
+
+		static string PrintExpression(SwiftParser.PrimaryExprContext context)
 		{
 
 		}

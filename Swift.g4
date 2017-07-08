@@ -27,6 +27,7 @@ statement
     | loopStmt
     | breakStmt
     | declarationStmt
+    | printStmt
     | expression
     ;
 
@@ -56,6 +57,10 @@ breakStmt
 
 declarationStmt
     : 'var' ID ':' TYPENAME ('=' expression)?
+    ;
+
+printStmt
+    : 'print' '(' ( expression (',' expression)* )? ')'
     ;
 
 // assignment expression
@@ -117,15 +122,10 @@ unaryExpr
 
 primaryExpr
     : '(' expression ')'
-    | functionCall
     | INT
     | FLOAT
     | ID
     | STRING
-    ;
-
-functionCall
-    : ID '(' ( expression (',' expression)* )? ')'
     ;
 
 /*

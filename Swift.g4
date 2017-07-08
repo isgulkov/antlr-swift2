@@ -133,8 +133,8 @@ primaryExpr
 
 STRING : '"' ( ~('\r' | '\n' | '"') | '\\"' )* '"' ;
 
-INT : DIGIT+ ;
-FLOAT : DIGIT+ ('.' DIGIT+)? ;
+INT : '-'? DIGIT+ ;
+FLOAT : '-'? DIGIT+ ('.' DIGIT+)? ;
 
 TYPENAME : 'Int' | 'Float' ;
 

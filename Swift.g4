@@ -35,7 +35,11 @@ conditionalStmt
     ;
 
 ifBlock
-    : 'if' expression codeBlock
+    : ifCondition codeBlock
+    ;
+
+ifCondition
+    : 'if' expression
     ;
 
 elseBlock

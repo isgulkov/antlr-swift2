@@ -9,7 +9,12 @@ options {
  */
 
 expression
+    : rangeExpr
+    ;
+
+rangeExpr
     : additiveExpr
+    | additiveExpr '...' additiveExpr // Range isn't supposed to be associative, right?
     ;
 
 additiveExpr

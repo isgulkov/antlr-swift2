@@ -25,6 +25,7 @@ statement
     : conditionalStmt
     | loopStmt
     | breakStmt
+    | declarationStmt
     | expression
     ;
 
@@ -46,6 +47,10 @@ loopStmt
 
 breakStmt
     : 'break'
+    ;
+
+declarationStmt
+    : 'var' ID ':' TYPENAME ('=' expression)?
     ;
 
 expression
@@ -130,6 +135,8 @@ STRING : '"' ( ~('\r' | '\n' | '"') | '\\"' )* '"' ;
 
 INT : DIGIT+ ;
 FLOAT : DIGIT+ ('.' DIGIT+)? ;
+
+TYPENAME : 'Int' | 'Float' ;
 
 ID : ID_HEAD ID_CHAR* ;
 

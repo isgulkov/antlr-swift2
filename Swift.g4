@@ -14,6 +14,7 @@ statements
 
 statement
     : conditionalStmt
+    | loopStmt
     | expression
     ;
 
@@ -27,6 +28,10 @@ ifBlock
 
 elseBlock
     : 'else' '{' statements? '}'
+    ;
+
+loopStmt
+    : 'for' ID 'in' rangeExpr '{' statements? '}'
     ;
 
 expression

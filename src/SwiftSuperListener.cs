@@ -40,19 +40,20 @@ namespace SwiftTranslator
 		public override void EnterFile(SwiftParser.FileContext context)
 		{
             OutLine("using System;");
+            OutLine("using System.Linq;");
 			OutLine("");
 			OutLine("class Program {");
 
             OutLine("static bool CompareWithTypes(object one, object another)");
 			OutLine("{");
 			OutLine("if(one is int && another is int) {");
-			OutLine("return (int)one == (int)another");
+			OutLine("return (int)one == (int)another;");
 			OutLine("}");
 			OutLine("else if(one is double && another is double) {");
-			OutLine("return (double)one == (double)another");
+			OutLine("return (double)one == (double)another;");
 			OutLine("}");
 			OutLine("else if(one is bool && another is bool) {");
-			OutLine("return (bool)one == (bool)another");
+			OutLine("return (bool)one == (bool)another;");
 			OutLine("}");
 			OutLine("else {");
 			OutLine("return false;");
@@ -77,9 +78,9 @@ namespace SwiftTranslator
 			return "_" + id;
 		}
 
-		static string PrintExpression(SwiftParser.ExpressionContext context)
+		string PrintExpression(SwiftParser.ExpressionContext context)
 		{
-			if(context.RuleIndex == 0) {
+			if(context.expression() == null) {
 				return PrintExpression(context.tertiaryExpr());
 			}
 			else {
@@ -87,7 +88,7 @@ namespace SwiftTranslator
 			}
 		}
 
-		static string PrintExpression(SwiftParser.TertiaryExprContext context)
+		string PrintExpression(SwiftParser.TertiaryExprContext context)
 		{
 			string result = PrintExpression(context.disjunctiveExpr()[0]);
 
@@ -102,11 +103,11 @@ namespace SwiftTranslator
 			return $"({result})";
 		}
 
-		static string PrintExpression(SwiftParser.DisjunctiveExprContext context)
+		string PrintExpression(SwiftParser.DisjunctiveExprContext context)
 		{
 			string result;
 
-			if(context.RuleIndex == 0) {
+			if(context.disjunctiveExpr() == null) {
 				result = PrintExpression(context.conjunctiveExpr());
 			}
 			else {
@@ -116,11 +117,11 @@ namespace SwiftTranslator
 			return $"({result})";
 		}
 
-		static string PrintExpression(SwiftParser.ConjunctiveExprContext context)
+		string PrintExpression(SwiftParser.ConjunctiveExprContext context)
 		{
 			string result;
 
-			if(context.RuleIndex == 0) {
+			if(context.conjunctiveExpr() == null) {
 				result = PrintExpression(context.comparativeExpr());
 			}
 			else {
@@ -130,11 +131,11 @@ namespace SwiftTranslator
 			return $"({result})";
 		}
 
-		static string PrintExpression(SwiftParser.ComparativeExprContext context)
+		string PrintExpression(SwiftParser.ComparativeExprContext context)
 		{
 			string result;
 
-			if(context.RuleIndex == 0) {
+			if(context.rangeExpr().Count() == 1) {
 				result = PrintExpression(context.rangeExpr()[0]);
 			}
 			else if(context.children[1].GetText() == "===") {
@@ -153,11 +154,11 @@ namespace SwiftTranslator
 			return $"({result})";
 		}
 
-		static string PrintExpression(SwiftParser.RangeExprContext context)
+		string PrintExpression(SwiftParser.RangeExprContext context)
 		{
 			string result;
 
-			if(context.RuleIndex == 0) {
+			if(context.additiveExpr().Count() == 1) {
 				result = PrintExpression(context.additiveExpr()[0]);
 			}
 			else {
@@ -168,11 +169,11 @@ namespace SwiftTranslator
 			return $"({result})";
 		}
 
-		static string PrintExpression(SwiftParser.AdditiveExprContext context)
+		string PrintExpression(SwiftParser.AdditiveExprContext context)
 		{
 			string result;
 
-			if(context.RuleIndex == 0) {
+			if(context.additiveExpr() == null) {
 				result = PrintExpression(context.multiplicativeExpr());
 			}
 			else {
@@ -183,11 +184,11 @@ namespace SwiftTranslator
 			return $"({result})";
 		}
 
-		static string PrintExpression(SwiftParser.MultiplicativeExprContext context)
+		string PrintExpression(SwiftParser.MultiplicativeExprContext context)
 		{
 			string result;
 
-			if(context.RuleIndex == 0) {
+			if(context.multiplicativeExpr() == null) {
 				result = PrintExpression(context.unaryExpr());
 			}
 			else {
@@ -198,11 +199,11 @@ namespace SwiftTranslator
 			return $"({result})";
 		}
 
-		static string PrintExpression(SwiftParser.UnaryExprContext context)
+		string PrintExpression(SwiftParser.UnaryExprContext context)
 		{
 			string result;
 
-			if(context.RuleIndex == 0) {
+			if(context.ChildCount == 1) {
 				result = PrintExpression(context.primaryExpr());
 			}
 			else {
@@ -212,9 +213,27 @@ namespace SwiftTranslator
 			return $"({result})";
 		}
 
-		static string PrintExpression(SwiftParser.PrimaryExprContext context)
+		string PrintExpression(SwiftParser.PrimaryExprContext context)
 		{
+			if(context.expression() != null) {
+				return PrintExpression(context.expression());
+			}
+			else if(context.ID() != null) {
+				return EscapeId(context.ID().GetText());
+			}
+			else {
+				return context.GetText();
+			}
+		}
 
+		public override void EnterPrintStmt(SwiftParser.PrintStmtContext context)
+		{
+			string toStringArgs = String.Join(
+				",",
+				context.expression().Select(PrintExpression).Select(s => $"({s}).ToString() + \" \"")
+			);
+
+			OutLine($"Console.WriteLine({toStringArgs});");
 		}
 
 		public override void EnterDeclarationStmt(SwiftParser.DeclarationStmtContext context)
@@ -276,9 +295,7 @@ namespace SwiftTranslator
 				PrintErrorAndExit(1001, "Range not specified in a for-loop statement");
 			}
 
-			OutLine($"for(int {EscapeId(context.ID().GetText())}" +
-					$"= {PrintExpression(context.rangeExpr().additiveExpr()[0])};" +
-					$"i <= {PrintExpression(context.rangeExpr().additiveExpr()[1])}; i++) {{");
+			OutLine($"foreach(int i in {PrintExpression(context.rangeExpr())}) {{");
 		}
 
 		public override void ExitLoopStmt(SwiftParser.LoopStmtContext context)
@@ -289,6 +306,13 @@ namespace SwiftTranslator
 		public override void EnterBreakStmt(SwiftParser.BreakStmtContext context)
 		{
 			OutLine("break;");
+		}
+
+		public override void EnterStatement(SwiftParser.StatementContext context)
+		{
+			if(context.expression() != null) {
+				OutLine(PrintExpression(context.expression()) + ";");
+			}
 		}
 	}
 }

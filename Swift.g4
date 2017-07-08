@@ -9,7 +9,20 @@ options {
  */
 
 expression
+    : comparativeExpr
+    ;
+
+comparativeExpr
     : rangeExpr
+    | comparativeExpr '<' rangeExpr
+    | comparativeExpr '<=' rangeExpr
+    | comparativeExpr '>' rangeExpr
+    | comparativeExpr '>=' rangeExpr
+    | comparativeExpr '==' rangeExpr
+    | comparativeExpr '!=' rangeExpr
+    | comparativeExpr '===' rangeExpr
+    | comparativeExpr '!==' rangeExpr
+    | comparativeExpr '~=' rangeExpr
     ;
 
 rangeExpr

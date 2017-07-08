@@ -8,6 +8,11 @@ options {
  Parser rules
  */
 
+codeBlock
+    : '{' statements? '}'
+    | statement
+    ;
+
 statements
     : (statement ';'?)+
     ;
@@ -23,15 +28,15 @@ conditionalStmt
     ;
 
 ifBlock
-    : 'if' expression '{' statements? '}'
+    : 'if' expression codeBlock
     ;
 
 elseBlock
-    : 'else' '{' statements? '}'
+    : 'else' codeBlock
     ;
 
 loopStmt
-    : 'for' ID 'in' rangeExpr '{' statements? '}'
+    : 'for' ID 'in' rangeExpr codeBlock
     ;
 
 expression

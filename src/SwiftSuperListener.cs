@@ -36,5 +36,19 @@ namespace SwiftTranslator
 
 			Environment.Exit(1);
 		}
+
+		public override void EnterFile(SwiftParser.FileContext context)
+		{
+            OutLine("using System;");
+			OutLine("");
+			OutLine("class Program {");
+			OutLine("public static void Main() {");
+		}
+
+		public override void ExitFile(SwiftParser.FileContext context)
+		{
+			OutLine("}");
+			OutLine("}");
+		}
 	}
 }

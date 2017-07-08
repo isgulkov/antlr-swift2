@@ -238,8 +238,8 @@ namespace SwiftTranslator
 		public override void EnterPrintStmt(SwiftParser.PrintStmtContext context)
 		{
 			string toStringArgs = String.Join(
-				",",
-				context.expression().Select(PrintExpression).Select(s => $"Print({s}) + \" \"")
+				" + ",
+				context.expression().Select(PrintExpression).Select(s => $"Print({s})")
 			);
 
 			OutLine($"Console.WriteLine({toStringArgs});");

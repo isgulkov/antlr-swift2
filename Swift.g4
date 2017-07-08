@@ -33,17 +33,17 @@ conjunctiveExpr
     | conjunctiveExpr '&&' comparativeExpr
     ;
 
-comparativeExpr
+comparativeExpr // non-associative
     : rangeExpr
-    | comparativeExpr '<' rangeExpr
-    | comparativeExpr '<=' rangeExpr
-    | comparativeExpr '>' rangeExpr
-    | comparativeExpr '>=' rangeExpr
-    | comparativeExpr '==' rangeExpr
-    | comparativeExpr '!=' rangeExpr
-    | comparativeExpr '===' rangeExpr
-    | comparativeExpr '!==' rangeExpr
-    | comparativeExpr '~=' rangeExpr
+    | rangeExpr '<' rangeExpr
+    | rangeExpr '<=' rangeExpr
+    | rangeExpr '>' rangeExpr
+    | rangeExpr '>=' rangeExpr
+    | rangeExpr '==' rangeExpr
+    | rangeExpr '!=' rangeExpr
+    | rangeExpr '===' rangeExpr
+    | rangeExpr '!==' rangeExpr
+    | rangeExpr '~=' rangeExpr
     ;
 
 rangeExpr

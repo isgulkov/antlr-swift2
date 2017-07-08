@@ -77,7 +77,6 @@ namespace SwiftTranslator
 			return "_" + id;
 		}
 
-		// TODO: consider putting parentheses around all printed expressions
 		static string PrintExpression(SwiftParser.ExpressionContext context)
 		{
 			if(context.RuleIndex == 0) {
@@ -100,89 +99,117 @@ namespace SwiftTranslator
 				result += " : " + PrintExpression(context.tertiaryExpr());
 			}
 
-			return result;
+			return $"({result})";
 		}
 
 		static string PrintExpression(SwiftParser.DisjunctiveExprContext context)
 		{
+			string result;
+
 			if(context.RuleIndex == 0) {
-				return PrintExpression(context.conjunctiveExpr());
+				result = PrintExpression(context.conjunctiveExpr());
 			}
 			else {
-				return PrintExpression(context.disjunctiveExpr()) + "||" + PrintExpression(context.conjunctiveExpr());
+				result = PrintExpression(context.disjunctiveExpr()) + "||" + PrintExpression(context.conjunctiveExpr());
 			}
+
+			return $"({result})";
 		}
 
 		static string PrintExpression(SwiftParser.ConjunctiveExprContext context)
 		{
+			string result;
+
 			if(context.RuleIndex == 0) {
-				return PrintExpression(context.comparativeExpr());
+				result = PrintExpression(context.comparativeExpr());
 			}
 			else {
-				return PrintExpression(context.conjunctiveExpr()) + "&&" + PrintExpression(context.comparativeExpr());
+				result = PrintExpression(context.conjunctiveExpr()) + "&&" + PrintExpression(context.comparativeExpr());
 			}
+
+			return $"({result})";
 		}
 
 		static string PrintExpression(SwiftParser.ComparativeExprContext context)
 		{
+			string result;
+
 			if(context.RuleIndex == 0) {
-				return PrintExpression(context.rangeExpr()[0]);
+				result = PrintExpression(context.rangeExpr()[0]);
 			}
 			else if(context.children[1].GetText() == "===") {
-				return $"CompareWithTypes({PrintExpression(context.rangeExpr()[0])}," +
+				result = $"CompareWithTypes({PrintExpression(context.rangeExpr()[0])}," +
 					$"{PrintExpression(context.rangeExpr()[1])})";
 			}
 			else if(context.children[1].GetText() == "!==") {
-				return $"!CompareWithTypes({PrintExpression(context.rangeExpr()[0])}," +
+				result = $"!CompareWithTypes({PrintExpression(context.rangeExpr()[0])}," +
 					$"{PrintExpression(context.rangeExpr()[1])})";
 			}
 			else {
-				return PrintExpression(context.rangeExpr()[0])
+				result = PrintExpression(context.rangeExpr()[0])
 					+ context.children[1].GetText() + PrintExpression(context.rangeExpr()[1]);
 			}
+
+			return $"({result})";
 		}
 
 		static string PrintExpression(SwiftParser.RangeExprContext context)
 		{
+			string result;
+
 			if(context.RuleIndex == 0) {
-				return PrintExpression(context.additiveExpr()[0]);
+				result = PrintExpression(context.additiveExpr()[0]);
 			}
 			else {
-				return $"Enumerable.Range({PrintExpression(context.additiveExpr()[0])}," +
+				result = $"Enumerable.Range({PrintExpression(context.additiveExpr()[0])}," +
 					$"{PrintExpression(context.additiveExpr()[1])})";
 			}
+
+			return $"({result})";
 		}
 
 		static string PrintExpression(SwiftParser.AdditiveExprContext context)
 		{
+			string result;
+
 			if(context.RuleIndex == 0) {
-				return PrintExpression(context.multiplicativeExpr());
+				result = PrintExpression(context.multiplicativeExpr());
 			}
 			else {
-				return PrintExpression(context.additiveExpr())
+				result = PrintExpression(context.additiveExpr())
 					+ context.children[1].GetText() + PrintExpression(context.multiplicativeExpr());
 			}
+
+			return $"({result})";
 		}
 
 		static string PrintExpression(SwiftParser.MultiplicativeExprContext context)
 		{
+			string result;
+
 			if(context.RuleIndex == 0) {
-				return PrintExpression(context.unaryExpr());
+				result = PrintExpression(context.unaryExpr());
 			}
 			else {
-				return PrintExpression(context.multiplicativeExpr())
+				result = PrintExpression(context.multiplicativeExpr())
 					+ context.children[1].GetText() + PrintExpression(context.unaryExpr());
 			}
+
+			return $"({result})";
 		}
 
 		static string PrintExpression(SwiftParser.UnaryExprContext context)
 		{
+			string result;
+
 			if(context.RuleIndex == 0) {
-				return PrintExpression(context.primaryExpr());
+				result = PrintExpression(context.primaryExpr());
 			}
-			else  {
-				return "!" + PrintExpression(context.primaryExpr());
+			else {
+				result = "!" + PrintExpression(context.primaryExpr());
 			}
+
+			return $"({result})";
 		}
 
 		static string PrintExpression(SwiftParser.PrimaryExprContext context)

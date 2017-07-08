@@ -71,7 +71,7 @@ tertiaryExpr // right-associative
 
 disjunctiveExpr
     : conjunctiveExpr
-    | comparativeExpr '||' conjunctiveExpr
+    | disjunctiveExpr '||' conjunctiveExpr
     ;
 
 conjunctiveExpr

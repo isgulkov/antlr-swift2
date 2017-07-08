@@ -9,7 +9,13 @@ options {
  */
 
 expression
+    : tertiaryExpr
+    ;
+
+tertiaryExpr // right-associative
     : disjunctiveExpr
+    | disjunctiveExpr '?' disjunctiveExpr
+    | disjunctiveExpr '?' disjunctiveExpr ':' tertiaryExpr
     ;
 
 disjunctiveExpr

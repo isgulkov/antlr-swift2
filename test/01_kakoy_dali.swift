@@ -3,8 +3,9 @@ var int: Int = 100
 
 for _ in 1...int {
 	float = float + 0.01
-	if (float < 0.5)
+	if (float < 0.5) {
 		break
+	}
 }
 
 print(float);

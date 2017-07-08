@@ -9,7 +9,13 @@ options {
  */
 
 expression
+    : multiplicativeExpr
+    ;
+
+multiplicativeExpr
     : unaryExpr
+    | multiplicativeExpr '*' unaryExpr
+    | multiplicativeExpr '%' unaryExpr
     ;
 
 unaryExpr

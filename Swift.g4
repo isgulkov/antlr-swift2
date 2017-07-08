@@ -20,6 +20,7 @@ statements
 statement
     : conditionalStmt
     | loopStmt
+    | breakStmt
     | expression
     ;
 
@@ -37,6 +38,10 @@ elseBlock
 
 loopStmt
     : 'for' ID 'in' rangeExpr codeBlock
+    ;
+
+breakStmt
+    : 'break'
     ;
 
 expression

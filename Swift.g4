@@ -9,7 +9,17 @@ options {
  */
 
 expression
+    : disjunctiveExpr
+    ;
+
+disjunctiveExpr
+    : conjunctiveExpr
+    | comparativeExpr '||' conjunctiveExpr
+    ;
+
+conjunctiveExpr
     : comparativeExpr
+    | conjunctiveExpr '&&' comparativeExpr
     ;
 
 comparativeExpr

@@ -137,7 +137,8 @@ namespace SwiftTranslator
 					$"{PrintExpression(context.rangeExpr()[1])})";
 			}
 			else {
-				return PrintExpression(context.rangeExpr()[0]) + context.children[1].GetText() + PrintExpression(context.rangeExpr()[1]);
+				return PrintExpression(context.rangeExpr()[0])
+					+ context.children[1].GetText() + PrintExpression(context.rangeExpr()[1]);
 			}
 		}
 
@@ -152,19 +153,36 @@ namespace SwiftTranslator
 			}
 		}
 
-		static string PrintExpression(SwiftParser.MultiplicativeExprContext context)
-		{
-
-		}
-
 		static string PrintExpression(SwiftParser.AdditiveExprContext context)
 		{
-			return context.GetText();
+			if(context.RuleIndex == 0) {
+				return PrintExpression(context.multiplicativeExpr());
+			}
+			else {
+				return PrintExpression(context.additiveExpr())
+					+ context.children[1].GetText() + PrintExpression(context.multiplicativeExpr());
+			}
+		}
+
+		static string PrintExpression(SwiftParser.MultiplicativeExprContext context)
+		{
+			if(context.RuleIndex == 0) {
+				return PrintExpression(context.unaryExpr());
+			}
+			else {
+				return PrintExpression(context.multiplicativeExpr())
+					+ context.children[1].GetText() + PrintExpression(context.unaryExpr());
+			}
 		}
 
 		static string PrintExpression(SwiftParser.UnaryExprContext context)
 		{
-
+			if(context.RuleIndex == 0) {
+				return PrintExpression(context.primaryExpr());
+			}
+			else  {
+				return "!" + PrintExpression(context.primaryExpr());
+			}
 		}
 
 		static string PrintExpression(SwiftParser.PrimaryExprContext context)

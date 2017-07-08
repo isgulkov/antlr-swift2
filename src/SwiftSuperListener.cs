@@ -116,5 +116,26 @@ namespace SwiftTranslator
 		{
 			OutLine("}");
 		}
+
+		public override void EnterLoopStmt(SwiftParser.LoopStmtContext context)
+		{
+			if(context.rangeExpr().additiveExpr().Count() != 2) {
+				PrintErrorAndExit(1001, "Range not specified in a for-loop statement");
+			}
+
+			OutLine($"for(int {EscapeId(context.ID().GetText())}" +
+					$"= {PrintExpression(context.rangeExpr().additiveExpr()[0])};" +
+					$"i <= {PrintExpression(context.rangeExpr().additiveExpr()[1])}; i++) {{");
+		}
+
+		public override void ExitLoopStmt(SwiftParser.LoopStmtContext context)
+		{
+			OutLine("}");
+		}
+
+		public override void EnterBreakStmt(SwiftParser.BreakStmtContext context)
+		{
+			OutLine("break;");
+		}
 	}
 }

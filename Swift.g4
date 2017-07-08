@@ -12,7 +12,7 @@ expression
     : assignmentExpr
     ;
 
-assignmentExpr
+assignmentExpr // right-associative
     : tertiaryExpr
     | tertiaryExpr '=' assignmentExpr
     ;
@@ -46,9 +46,9 @@ comparativeExpr // non-associative
     | rangeExpr '~=' rangeExpr
     ;
 
-rangeExpr
+rangeExpr // non-associative
     : additiveExpr
-    | additiveExpr '...' additiveExpr // Range isn't supposed to be associative, right?
+    | additiveExpr '...' additiveExpr
     ;
 
 additiveExpr

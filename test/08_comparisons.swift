@@ -1,37 +1,37 @@
 
 
 if 14 <= 14 {
-	print "expected"
+	print("expected")
 }
 else {
-	print "unexpected"
+	print("unexpected")
 }
 
 if 14 < 14 {
-	print "unexpected"
+	print("unexpected")
 }
 else {
-	print "expected"
+	print("expected")
 }
 
 if 14 >= 14 {
-	print "expected"
+	print("expected")
 }
 else {
-	print "unexpected"
+	print("unexpected")
 }
 
 if 14 > 14 {
-	print "unexpected"
+	print("unexpected")
 }
 else {
-	print "expected"
+	print("expected")
 }
 
 if 14 > 14.0 {
-	print "unexpected"
+	print("unexpected")
 }
 else {
-	print "expected"
+	print("expected")
 }
 

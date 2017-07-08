@@ -89,7 +89,6 @@ comparativeExpr // non-associative
     | rangeExpr '!=' rangeExpr
     | rangeExpr '===' rangeExpr
     | rangeExpr '!==' rangeExpr
-    | rangeExpr '~=' rangeExpr
     ;
 
 rangeExpr // non-associative

@@ -86,6 +86,11 @@ functionCall
  Lexer rules
  */
 
+STRING : '"' ( ~('\r' | '\n' | '"') | '\\"' )* '"' ;
+
+INT : DIGIT+ ;
+FLOAT : DIGIT+ ('.' DIGIT+)? ;
+
 ID : ID_HEAD ID_CHAR* ;
 
 // Identifier characters straight from the official Swift documentation
@@ -114,12 +119,6 @@ ID_CHAR
     | '\u0300' .. '\u036F' | '\u1DC0' .. '\u1DFF' | '\u20D0' .. '\u20FF' | '\uFE20' .. '\uFE2F'
     | '0' .. '9'
     ;
-
-
-STRING : '"' ( ~('\r' | '\n' | '"') | '\\"' )* '"' ;
-
-INT : DIGIT+ ;
-FLOAT : DIGIT+ ('.' DIGIT+)? ;
 
 DIGIT : [0-9] ;
 

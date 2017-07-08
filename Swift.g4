@@ -61,7 +61,7 @@ declarationStmt
 // assignment expression
 expression // right-associative
     : tertiaryExpr
-    | tertiaryExpr '=' assignmentExpr
+    | tertiaryExpr '=' expression
     ;
 
 tertiaryExpr // right-associative

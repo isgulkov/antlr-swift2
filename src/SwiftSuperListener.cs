@@ -50,5 +50,38 @@ namespace SwiftTranslator
 			OutLine("}");
 			OutLine("}");
 		}
+
+		static string PrintExpression(SwiftParser.ExpressionContext context)
+		{
+			return context.GetText();
+		}
+
+		public override void EnterDeclarationStmt(SwiftParser.DeclarationStmtContext context)
+		{
+			string csTypename;
+
+			switch(context.TYPENAME().GetText()) {
+				case "Int":
+					csTypename = "int";
+					break;
+				case "Float":
+					csTypename = "double";
+					break;
+				default: // Never happens
+					csTypename = "";
+					break;
+			}
+
+			/*
+			 * Underscore added to escape ids that are C# keywords
+			 */
+			Out($"{csTypename} _{context.ID().GetText()}");
+
+			if(context.expression() != null) {
+				Out($" = {PrintExpression(context.expression())}");
+			}
+
+			OutLine(";");
+		}
 	}
 }

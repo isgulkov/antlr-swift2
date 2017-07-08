@@ -58,11 +58,8 @@ declarationStmt
     : 'var' ID ':' TYPENAME ('=' expression)?
     ;
 
-expression
-    : assignmentExpr
-    ;
-
-assignmentExpr // right-associative
+// assignment expression
+expression // right-associative
     : tertiaryExpr
     | tertiaryExpr '=' assignmentExpr
     ;

@@ -9,7 +9,12 @@ options {
  */
 
 expression
+    : unaryExpr
+    ;
+
+unaryExpr
     : primaryExpr
+    | '!' primaryExpr
     ;
 
 primaryExpr

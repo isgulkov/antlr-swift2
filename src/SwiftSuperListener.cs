@@ -59,9 +59,75 @@ namespace SwiftTranslator
 			return "_" + id;
 		}
 
+		// TODO: consider putting parentheses around all printed expressions
 		static string PrintExpression(SwiftParser.ExpressionContext context)
 		{
+			if(context.RuleIndex == 0) {
+				return PrintExpression(context.tertiaryExpr());
+			}
+			else {
+				return PrintExpression(context.tertiaryExpr()) + " = " + PrintExpression(context.expression());
+			}
+		}
+
+		static string PrintExpression(SwiftParser.TertiaryExprContext context)
+		{
+			string result = PrintExpression(context.disjunctiveExpr()[0]);
+
+			if(context.disjunctiveExpr().Count() == 2) {
+				result += " ? " + PrintExpression(context.disjunctiveExpr()[1]);
+			}
+
+			if(context.tertiaryExpr() != null) {
+				result += " : " + PrintExpression(context.tertiaryExpr());
+			}
+
+			return result;
+		}
+
+		static string PrintExpression(SwiftParser.DisjunctiveExprContext context)
+		{
+			if(context.RuleIndex == 0) {
+				return PrintExpression(context.conjunctiveExpr());
+			}
+			else {
+				return PrintExpression(context.disjunctiveExpr()) + "||" + PrintExpression(context.conjunctiveExpr());
+			}
+		}
+
+		static string PrintExpression(SwiftParser.ConjunctiveExprContext context)
+		{
+
+		}
+
+		static string PrintExpression(SwiftParser.ComparativeExprContext context)
+		{
+
+		}
+
+		static string PrintExpression(SwiftParser.RangeExprContext context)
+		{
+
+		}
+
+		static string PrintExpression(SwiftParser.PrimaryExprContext context)
+		{
+
+		}
+
+		static string PrintExpression(SwiftParser.MultiplicativeExprContext context)
+		{
+
+		}
+
+		static string PrintExpression(SwiftParser.AdditiveExprContext context)
+		{
 			return context.GetText();
+		}
+
+		static string PrintExpression(SwiftParser.UnaryExprContext context)
+		{
+
 		}
 
 		public override void EnterDeclarationStmt(SwiftParser.DeclarationStmtContext context)

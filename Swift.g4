@@ -8,6 +8,27 @@ options {
  Parser rules
  */
 
+statements
+    : (statement ';'?)+
+    ;
+
+statement
+    : conditionalStmt
+    | expression
+    ;
+
+conditionalStmt
+    : ifBlock elseBlock?
+    ;
+
+ifBlock
+    : 'if' expression '{' statements? '}'
+    ;
+
+elseBlock
+    : 'else' '{' statements? '}'
+    ;
+
 expression
     : assignmentExpr
     ;
@@ -122,6 +143,5 @@ ID_CHAR
 
 DIGIT : [0-9] ;
 
-NEWLINE : ('\r' | '\n')+ ;
 
 WS : ( '\t' | ' ' | '\r' | '\n' )+ -> channel(HIDDEN) ;

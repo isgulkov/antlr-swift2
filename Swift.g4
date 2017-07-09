@@ -121,10 +121,9 @@ unaryExpr
 
 primaryExpr
     : '(' expression ')'
+    | BOOL
     | ID '(' ')'
     | primaryExpr '.' ID
-    | INT
-    | FLOAT
     | ID
     | STRING
     ;
@@ -135,8 +134,7 @@ primaryExpr
 
 STRING : '"' ( ~('\r' | '\n' | '"') | '\\"' )* '"' ;
 
-INT : '-'? DIGIT+ ;
-FLOAT : '-'? DIGIT+ ('.' DIGIT+)? ;
+BOOL : 'true' | 'false' ;
 
 TYPENAME : 'String' | 'Bool' ;
 

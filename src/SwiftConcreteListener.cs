@@ -159,6 +159,22 @@ namespace SwiftTranslator
 				result = $"!CompareWithTypes({PrintExpression(context.additiveExpr()[0])}," +
 					$"{PrintExpression(context.additiveExpr()[1])})";
 			}
+			else if(context.children[1].GetText() == "<") {
+				result = $"LessThanEvenForStrings({PrintExpression(context.additiveExpr()[0])}," +
+					$"{PrintExpression(context.additiveExpr()[1])})";
+			}
+			else if(context.children[1].GetText() == "<=") {
+				result = $"!GreaterThanEvenForStrings({PrintExpression(context.additiveExpr()[0])}," +
+					$"{PrintExpression(context.additiveExpr()[1])})";
+			}
+			else if(context.children[1].GetText() == ">") {
+				result = $"GreaterThanEvenForStrings({PrintExpression(context.additiveExpr()[0])}," +
+					$"{PrintExpression(context.additiveExpr()[1])})";
+			}
+			else if(context.children[1].GetText() == ">=") {
+				result = $"!LessThanEvenForStrings({PrintExpression(context.additiveExpr()[0])}," +
+					$"{PrintExpression(context.additiveExpr()[1])})";
+			}
 			else {
 				result = PrintExpression(context.additiveExpr()[0])
 					+ context.children[1].GetText() + PrintExpression(context.additiveExpr()[1]);

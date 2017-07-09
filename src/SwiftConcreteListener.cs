@@ -251,7 +251,7 @@ namespace SwiftTranslator
 
 		public override void ExitLoopStmt(SwiftParser.LoopStmtContext context)
 		{
-			OutLine($"}} while ({PrintExpression(context.expression())})");
+			OutLine($"}} while ({PrintExpression(context.expression())});");
 		}
 
 		public override void EnterBreakStmt(SwiftParser.BreakStmtContext context)

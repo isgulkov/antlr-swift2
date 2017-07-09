@@ -61,7 +61,6 @@ namespace SwiftTranslator
 			OutLine("throw new Exception($\"< cannot be applied to objects of types {one.GetType()} and {another.GetType()}\");");
 			OutLine("}");
 			OutLine("}");
-			OutLine("");
 			OutLine("static bool GreaterThanEvenForStrings(object one, object another)");
 			OutLine("{");
 			OutLine("if(one is string && another is string) {");
@@ -72,6 +71,20 @@ namespace SwiftTranslator
 			OutLine("}");
 			OutLine("}");
 
+			OutLine("static string Print(object o)");
+			OutLine("{");
+			OutLine("if(o is bool) {");
+			OutLine("if((bool)o) {");
+			OutLine("return \"true\";");
+			OutLine("}");
+			OutLine("else {");
+			OutLine("return \"false\";");
+			OutLine("}");
+			OutLine("}");
+			OutLine("else {");
+			OutLine("return o.ToString();");
+			OutLine("}");
+			OutLine("}");
 
 			OutLine("public static void Main() {");
 		}
@@ -250,7 +263,7 @@ namespace SwiftTranslator
 		{
 			string toStringArgs = String.Join(
 				" + ",
-				context.expression().Select(PrintExpression).Select(s => $"({s}).ToString()")
+				context.expression().Select(PrintExpression).Select(s => $"Print({s})")
 			);
 
 			OutLine($"Console.WriteLine({toStringArgs});");

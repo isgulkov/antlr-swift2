@@ -7,7 +7,7 @@ class Priv
 var p : Priv = Priv()
 
 repeat {
-    p = p + "x";
-} while p < "xxxxxxxxxx"  ;
+    p.s = p.s + "x";
+} while p.s < "xxxxxxxxxx"  ;
 
-print(p, "(10 xs expected)")
+print(p.s, " (10 xs expected)")

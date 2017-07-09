@@ -230,19 +230,19 @@ namespace SwiftTranslator
 			OutLine($"Console.WriteLine({toStringArgs});");
 		}
 
-		public override void EnterDeclarationStmt(SwiftParser.DeclarationStmtContext context)
+		public override void EnterVariableDeclStmt(SwiftParser.VariableDeclStmtContext context)
 		{
 			string csTypename;
 
 			switch(context.TYPENAME().GetText()) {
-				case "Int":
-					csTypename = "int";
+				case "Bool":
+					csTypename = "bool";
 					break;
-				case "Float":
-					csTypename = "double";
+				case "String":
+					csTypename = "string";
 					break;
-				default: // Never happens
-					csTypename = "";
+				default:
+					csTypename = context.TYPENAME().GetText();
 					break;
 			}
 

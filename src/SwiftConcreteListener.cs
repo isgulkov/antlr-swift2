@@ -213,22 +213,29 @@ namespace SwiftTranslator
 		{
 			string csTypename;
 
-			switch(context.TYPENAME().GetText()) {
-				case "Bool":
-					csTypename = "bool";
-					break;
-				case "String":
-					csTypename = "string";
-					break;
-				default:
-					csTypename = context.TYPENAME().GetText();
-					break;
+			if(context.TYPENAME() != null) {
+				switch(context.TYPENAME().GetText()) {
+					case "Bool":
+						csTypename = "bool";
+						break;
+					case "String":
+						csTypename = "string";
+						break;
+					default: // Never happens
+						csTypename = "";
+						break;
+				}
+			}
+			else {
+				csTypename = EscapeId(context.ID()[0].GetText());
 			}
 
-			/*
-			 * Underscore added to escape ids that are C# keywords
-			 */
-			Out($"{csTypename} {EscapeId(context.ID().GetText())}");
+			if(context.TYPENAME() != null) {
+				Out($"{csTypename} {EscapeId(context.ID()[0].GetText())}");
+			}
+			else {
+				Out($"{EscapeId(context.ID()[0].GetText())} {EscapeId(context.ID()[1].GetText())}");
+			}
 
 			if(context.expression() != null) {
 				Out($" = {PrintExpression(context.expression())}");

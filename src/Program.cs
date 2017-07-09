@@ -28,7 +28,7 @@ namespace SwiftTranslator
 
 			var pastwk = new ParseTreeWalker();
 
-			pastwk.Walk(new SwiftSuperListener(args[1]), tree);
+			pastwk.Walk(new SwiftConcreteListener(args[1]), tree);
 		}
 	}
 }

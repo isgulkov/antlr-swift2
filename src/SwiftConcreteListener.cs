@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace SwiftTranslator
 {
-	public class SwiftSuperListener : SwiftBaseListener
+	public class SwiftConcreteListener : SwiftBaseListener
 	{
 		readonly string OutputFilename;
 		StreamWriter OutputWriter;
 
-		public SwiftSuperListener(string outputFilename)
+		public SwiftConcreteListener(string outputFilename)
 		{
 			OutputFilename = outputFilename;
 

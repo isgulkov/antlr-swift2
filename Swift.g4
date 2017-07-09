@@ -43,7 +43,7 @@ variableDeclStmt
     ;
 
 classDeclStmt
-    : 'class' ID (':' ID)? '{' variableDeclStmt* '}'
+    : 'class' ID (':' ID)? '{' (variableDeclStmt ';'?)* '}'
     ;
 
 printStmt

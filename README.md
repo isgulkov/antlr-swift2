@@ -1,39 +1,49 @@
-Вариант 17
+Вариант 19
 
 Подмножество языка Swift
 
-Доступные операторы: =, -, ^, &&, ||, операторы сравнения, *, %, !, тернарники,
-print, for in-цикл, if-else, break
+Доступные операторы: =, -, ^, &&, ||, операторы сравнения, *, %, !, тернарники, print, repeat-while-цикл, break, class declaration
 
-Доступные типы: Float, Int
+Доступные типы: String, Bool
 
 Пример кода:
 
 ```
-var float: Float = 1.0
-var int: Int = 100
-
-for _ in 1...int {
-	float = float + 0.01
-	if (float < 0.5)
-		break
+class MyClass {
+var inner: String = "aaaaaa"
 }
 
-print(float);
+var str: String = "a"
+var flag: Bool = true
+var myClass: MyClass = MyClass()
 
-if (float > 2.99) {
-	print("Ne Norm")
-} else {
-	print("norm!")
-}
+repeat {
+	str = str + "a";
+	flag = !flag
+} while (str < myClass.inner);
+
+print(flag)
 ```
 
-Ожидаемый вывод:
+Ожидаемый вывод: `false`
 
-```
-2.0
-norm!
-```
+## Отличия от варианта 17
 
-// комментарий к заданию: обратите внимание, что при присвоении значения для
-переменной типа Float в языке Swift не требуется явное указание типа "f" (1.0f)
+#### Операторы
+
+Без изменений: print, break
+
+Убрано: for in-цикл, if-else
+
+Добавлено: repeat-while-цикл, class declaration
+
+#### Операции
+
+Без изменений: =, -, ^, &&, ||, операторы сравнения, *, %, !, тернарники
+
+#### Типы
+
+Убрано: Float, Int
+
+Добавлено: String, Bool
+

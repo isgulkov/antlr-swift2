@@ -52,6 +52,27 @@ namespace SwiftTranslator
 			OutLine("return one.GetType() == another.GetType() && one == another;");
 			OutLine("}");
 
+            OutLine("static bool LessThanEvenForStrings(object one, object another)");
+			OutLine("{");
+			OutLine("if(one is string && another is string) {");
+			OutLine("return String.Compare((string)one, (string)another) < 0;");
+			OutLine("}");
+			OutLine("else {");
+			OutLine("throw new Exception($\"< cannot be applied to objects of types {one.GetType()} and {another.GetType()}\");");
+			OutLine("}");
+			OutLine("}");
+			OutLine("");
+			OutLine("static bool GreaterThanEvenForStrings(object one, object another)");
+			OutLine("{");
+			OutLine("if(one is string && another is string) {");
+			OutLine("return String.Compare((string)one, (string)another) > 0;");
+			OutLine("}");
+			OutLine("else {");
+			OutLine("throw new Exception($\"> cannot be applied to objects of types {one.GetType()} and {another.GetType()}\");");
+			OutLine("}");
+			OutLine("}");
+
+
 			OutLine("public static void Main() {");
 		}
 

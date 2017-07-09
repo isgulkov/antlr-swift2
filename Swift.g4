@@ -48,7 +48,7 @@ elseBlock
     ;
 
 loopStmt
-    : 'for' ID 'in' rangeExpr codeBlock
+    : 'repeat' codeBlock 'while' '(' expression ')'
     ;
 
 breakStmt
@@ -90,20 +90,15 @@ conjunctiveExpr
     ;
 
 comparativeExpr // non-associative
-    : rangeExpr
-    | rangeExpr '<' rangeExpr
-    | rangeExpr '<=' rangeExpr
-    | rangeExpr '>' rangeExpr
-    | rangeExpr '>=' rangeExpr
-    | rangeExpr '==' rangeExpr
-    | rangeExpr '!=' rangeExpr
-    | rangeExpr '===' rangeExpr
-    | rangeExpr '!==' rangeExpr
-    ;
-
-rangeExpr // non-associative
     : additiveExpr
-    | additiveExpr '...' additiveExpr
+    | additiveExpr '<' additiveExpr
+    | additiveExpr '<=' additiveExpr
+    | additiveExpr '>' additiveExpr
+    | additiveExpr '>=' additiveExpr
+    | additiveExpr '==' additiveExpr
+    | additiveExpr '!=' additiveExpr
+    | additiveExpr '===' additiveExpr
+    | additiveExpr '!==' additiveExpr
     ;
 
 additiveExpr

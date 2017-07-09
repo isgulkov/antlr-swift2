@@ -250,7 +250,7 @@ namespace SwiftTranslator
 				result += $"{csTypename} {EscapeId(context.ID()[0].GetText())}";
 			}
 			else {
-				result += $"{EscapeId(context.ID()[0].GetText())} {EscapeId(context.ID()[1].GetText())}";
+				result += $"{EscapeId(context.ID()[1].GetText())} {EscapeId(context.ID()[0].GetText())}";
 			}
 
 			if(context.expression() != null) {

@@ -25,7 +25,8 @@ statement
     : conditionalStmt
     | loopStmt
     | breakStmt
-    | declarationStmt
+    | variableDeclStmt
+    | classDeclStmt
     | printStmt
     | expression
     ;
@@ -54,8 +55,12 @@ breakStmt
     : 'break'
     ;
 
-declarationStmt
+variableDeclStmt
     : 'var' ID ':' TYPENAME ('=' expression)?
+    ;
+
+classDeclStmt
+    : 'class' ID (':' ID)? '{' variableDeclStmt* '}'
     ;
 
 printStmt

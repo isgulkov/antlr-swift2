@@ -39,7 +39,8 @@ breakStmt
     ;
 
 variableDeclStmt
-    : 'var' ID ':' (TYPENAME | ID) ('=' expression)?
+    : 'var' ID ':' TYPENAME ('=' expression)?
+    | 'var' ID ':' ID ('=' expression)?
     ;
 
 classDeclStmt

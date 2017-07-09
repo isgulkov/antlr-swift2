@@ -31,7 +31,7 @@ statement
     ;
 
 loopStmt
-    : 'repeat' codeBlock 'while' '(' expression ')'
+    : 'repeat' codeBlock 'while' expression
     ;
 
 breakStmt

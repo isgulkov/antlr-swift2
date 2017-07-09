@@ -258,31 +258,6 @@ namespace SwiftTranslator
 			OutLine(";");
 		}
 
-		public override void EnterIfCondition(SwiftParser.IfConditionContext context)
-		{
-			Out($"if({PrintExpression(context.expression())} ");
-		}
-
-		public override void ExitIfCondition(SwiftParser.IfConditionContext context)
-		{
-			OutLine(") {");
-		}
-
-		public override void ExitIfBlock(SwiftParser.IfBlockContext context)
-		{
-			OutLine("}");
-		}
-
-		public override void EnterElseBlock(SwiftParser.ElseBlockContext context)
-		{
-			OutLine("else {");
-		}
-
-		public override void ExitElseBlock(SwiftParser.ElseBlockContext context)
-		{
-			OutLine("}");
-		}
-
 		public override void EnterLoopStmt(SwiftParser.LoopStmtContext context)
 		{
 			if(context.rangeExpr().additiveExpr().Count() != 2) {

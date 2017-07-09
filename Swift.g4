@@ -122,6 +122,7 @@ unaryExpr
 primaryExpr
     : '(' expression ')'
     | ID '(' ')'
+    | primaryExpr '.' ID
     | INT
     | FLOAT
     | ID

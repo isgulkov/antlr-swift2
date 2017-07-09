@@ -260,16 +260,12 @@ namespace SwiftTranslator
 
 		public override void EnterLoopStmt(SwiftParser.LoopStmtContext context)
 		{
-			if(context.rangeExpr().additiveExpr().Count() != 2) {
-				PrintErrorAndExit(1001, "Range not specified in a for-loop statement");
-			}
-
-			OutLine($"foreach(int {EscapeId(context.ID().GetText())} in {PrintExpression(context.rangeExpr())}) {{");
+			OutLine("do {");
 		}
 
 		public override void ExitLoopStmt(SwiftParser.LoopStmtContext context)
 		{
-			OutLine("}");
+			OutLine($"}} while ({PrintExpression(context.expression())})");
 		}
 
 		public override void EnterBreakStmt(SwiftParser.BreakStmtContext context)

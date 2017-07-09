@@ -49,16 +49,6 @@ namespace SwiftTranslator
 			OutLine("return one.GetType() == another.GetType() && one == another;");
 			OutLine("}");
 
-            OutLine("static string Print(object o)");
-			OutLine("{");
-			OutLine("if(o is double) {");
-			OutLine("return String.Format(\"{0:0.0###########} \", (double)o);");
-			OutLine("}");
-			OutLine("else {");
-			OutLine("return o.ToString() + \" \";");
-			OutLine("}");
-			OutLine("}");
-
 			OutLine("public static void Main() {");
 		}
 
@@ -213,7 +203,7 @@ namespace SwiftTranslator
 		{
 			string toStringArgs = String.Join(
 				" + ",
-				context.expression().Select(PrintExpression).Select(s => $"Print({s})")
+				context.expression().Select(PrintExpression).Select(s => $"({s}).ToString()")
 			);
 
 			OutLine($"Console.WriteLine({toStringArgs});");

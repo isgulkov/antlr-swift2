@@ -9,6 +9,8 @@ namespace SwiftTranslator
 		readonly string OutputFilename;
 		StreamWriter OutputWriter;
 
+		string ClassDeclrsOutput = "";
+
 		bool InClass = false;
 
 		public SwiftConcreteListener(string outputFilename)
@@ -56,6 +58,7 @@ namespace SwiftTranslator
 		public override void ExitFile(SwiftParser.FileContext context)
 		{
 			OutLine("}");
+			Out(ClassDeclrsOutput);
 			OutLine("}");
 		}
 
@@ -218,8 +221,10 @@ namespace SwiftTranslator
 
 		public override void EnterVariableDeclStmt(SwiftParser.VariableDeclStmtContext context)
 		{
+			string result = "";
+
 			if(InClass) {
-				Out("public ");
+				result += "public ";
 			}
 
 			string csTypename;
@@ -242,17 +247,24 @@ namespace SwiftTranslator
 			}
 
 			if(context.TYPENAME() != null) {
-				Out($"{csTypename} {EscapeId(context.ID()[0].GetText())}");
+				result += $"{csTypename} {EscapeId(context.ID()[0].GetText())}";
 			}
 			else {
-				Out($"{EscapeId(context.ID()[0].GetText())} {EscapeId(context.ID()[1].GetText())}");
+				result += $"{EscapeId(context.ID()[0].GetText())} {EscapeId(context.ID()[1].GetText())}";
 			}
 
 			if(context.expression() != null) {
-				Out($" = {PrintExpression(context.expression())}");
+				result += $" = {PrintExpression(context.expression())}";
 			}
 
-			OutLine(";");
+			result += ";\n";
+
+			if(InClass) {
+				ClassDeclrsOutput += result;
+			}
+			else {
+				Out(result);
+			}
 		}
 
 		public override void EnterLoopStmt(SwiftParser.LoopStmtContext context)
@@ -279,23 +291,23 @@ namespace SwiftTranslator
 
 		public override void EnterClassDeclStmt(SwiftParser.ClassDeclStmtContext context)
 		{
-			Out($"class {EscapeId(context.ID()[0].GetText())}");
+			ClassDeclrsOutput += $"class {EscapeId(context.ID()[0].GetText())}";
 
 			if(context.ID().Count() == 2) {
-				OutLine($" : {EscapeId(context.ID()[1].GetText())}");
+				ClassDeclrsOutput += $" : {EscapeId(context.ID()[1].GetText())}\n";
 			}
 			else {
-				OutLine("");
+				ClassDeclrsOutput += "\n";
 			}
 
-			OutLine("{");
+			ClassDeclrsOutput += "{\n";
 
 			InClass = true;
 		}
 
 		public override void ExitClassDeclStmt(SwiftParser.ClassDeclStmtContext context)
 		{
-			OutLine("}");
+			ClassDeclrsOutput += "}\n";
 
 			InClass = false;
 		}

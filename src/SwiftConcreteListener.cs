@@ -46,18 +46,7 @@ namespace SwiftTranslator
 
             OutLine("static bool CompareWithTypes(object one, object another)");
 			OutLine("{");
-			OutLine("if(one is int && another is int) {");
-			OutLine("return (int)one == (int)another;");
-			OutLine("}");
-			OutLine("else if(one is double && another is double) {");
-			OutLine("return (double)one == (double)another;");
-			OutLine("}");
-			OutLine("else if(one is bool && another is bool) {");
-			OutLine("return (bool)one == (bool)another;");
-			OutLine("}");
-			OutLine("else {");
-			OutLine("return false;");
-			OutLine("}");
+			OutLine("return one.GetType() == another.GetType() && one == another;");
 			OutLine("}");
 
             OutLine("static string Print(object o)");

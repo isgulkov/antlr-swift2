@@ -144,35 +144,20 @@ namespace SwiftTranslator
 		{
 			string result;
 
-			if(context.rangeExpr().Count() == 1) {
-				result = PrintExpression(context.rangeExpr()[0]);
-			}
-			else if(context.children[1].GetText() == "===") {
-				result = $"CompareWithTypes({PrintExpression(context.rangeExpr()[0])}," +
-					$"{PrintExpression(context.rangeExpr()[1])})";
-			}
-			else if(context.children[1].GetText() == "!==") {
-				result = $"!CompareWithTypes({PrintExpression(context.rangeExpr()[0])}," +
-					$"{PrintExpression(context.rangeExpr()[1])})";
-			}
-			else {
-				result = PrintExpression(context.rangeExpr()[0])
-					+ context.children[1].GetText() + PrintExpression(context.rangeExpr()[1]);
-			}
-
-			return $"({result})";
-		}
-
-		string PrintExpression(SwiftParser.RangeExprContext context)
-		{
-			string result;
-
 			if(context.additiveExpr().Count() == 1) {
 				result = PrintExpression(context.additiveExpr()[0]);
 			}
-			else {
-				result = $"Enumerable.Range({PrintExpression(context.additiveExpr()[0])}," +
+			else if(context.children[1].GetText() == "===") {
+				result = $"CompareWithTypes({PrintExpression(context.additiveExpr()[0])}," +
 					$"{PrintExpression(context.additiveExpr()[1])})";
+			}
+			else if(context.children[1].GetText() == "!==") {
+				result = $"!CompareWithTypes({PrintExpression(context.additiveExpr()[0])}," +
+					$"{PrintExpression(context.additiveExpr()[1])})";
+			}
+			else {
+				result = PrintExpression(context.additiveExpr()[0])
+					+ context.children[1].GetText() + PrintExpression(context.additiveExpr()[1]);
 			}
 
 			return $"({result})";

@@ -22,29 +22,12 @@ statements
     ;
 
 statement
-    : conditionalStmt
-    | loopStmt
+    : loopStmt
     | breakStmt
     | variableDeclStmt
     | classDeclStmt
     | printStmt
     | expression
-    ;
-
-conditionalStmt
-    : ifBlock elseBlock?
-    ;
-
-ifBlock
-    : ifCondition codeBlock
-    ;
-
-ifCondition
-    : 'if' expression
-    ;
-
-elseBlock
-    : 'else' codeBlock
     ;
 
 loopStmt

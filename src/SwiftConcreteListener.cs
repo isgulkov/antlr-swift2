@@ -9,6 +9,8 @@ namespace SwiftTranslator
 		readonly string OutputFilename;
 		StreamWriter OutputWriter;
 
+		bool InClass = false;
+
 		public SwiftConcreteListener(string outputFilename)
 		{
 			OutputFilename = outputFilename;
@@ -191,6 +193,12 @@ namespace SwiftTranslator
 			if(context.expression() != null) {
 				return PrintExpression(context.expression());
 			}
+			else if(context.ID() != null && context.primaryExpr() != null) {
+				return $"{PrintExpression(context.primaryExpr())}.{EscapeId(context.ID().GetText())}";
+			}
+			else if(context.ID() != null && context.ChildCount == 3) {
+				return $"new {EscapeId(context.ID().GetText())}()";
+			}
 			else if(context.ID() != null) {
 				return EscapeId(context.ID().GetText());
 			}
@@ -211,6 +219,10 @@ namespace SwiftTranslator
 
 		public override void EnterVariableDeclStmt(SwiftParser.VariableDeclStmtContext context)
 		{
+			if(InClass) {
+				Out("public ");
+			}
+
 			string csTypename;
 
 			if(context.TYPENAME() != null) {
@@ -264,6 +276,29 @@ namespace SwiftTranslator
 			if(context.expression() != null) {
 				OutLine(PrintExpression(context.expression()) + ";");
 			}
+		}
+
+		public override void EnterClassDeclStmt(SwiftParser.ClassDeclStmtContext context)
+		{
+			Out($"class {EscapeId(context.ID()[0].GetText())}");
+
+			if(context.ID().Count() == 2) {
+				OutLine($" : {EscapeId(context.ID()[1].GetText())}");
+			}
+			else {
+				OutLine("");
+			}
+
+			OutLine("{");
+
+			InClass = true;
+		}
+
+		public override void ExitClassDeclStmt(SwiftParser.ClassDeclStmtContext context)
+		{
+			OutLine("}");
+
+			InClass = false;
 		}
 	}
 }

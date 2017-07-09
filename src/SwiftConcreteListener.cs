@@ -42,7 +42,6 @@ namespace SwiftTranslator
 		public override void EnterFile(SwiftParser.FileContext context)
 		{
             OutLine("using System;");
-            OutLine("using System.Linq;");
 			OutLine("");
 			OutLine("class Program {");
 

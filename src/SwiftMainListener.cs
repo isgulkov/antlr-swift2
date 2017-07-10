@@ -120,141 +120,119 @@ namespace SwiftTranslator
 
 			if(context.disjunctiveExpr().Count() == 2) {
 				result += " ? " + PrintExpression(context.disjunctiveExpr()[1]);
+
+				if(context.tertiaryExpr() != null) {
+					result += " : " + PrintExpression(context.tertiaryExpr());
+				}
+
+				return $"({result})";
 			}
 
-			if(context.tertiaryExpr() != null) {
-				result += " : " + PrintExpression(context.tertiaryExpr());
-			}
-
-			return $"({result})";
+			return result;
 		}
 
 		string PrintExpression(SwiftParser.DisjunctiveExprContext context)
 		{
-			string result;
-
 			if(context.disjunctiveExpr() == null) {
-				result = PrintExpression(context.conjunctiveExpr());
+				return PrintExpression(context.conjunctiveExpr());
 			}
 			else {
-				result = PrintExpression(context.disjunctiveExpr()) + "||" + PrintExpression(context.conjunctiveExpr());
+				return $"({PrintExpression(context.disjunctiveExpr())} || {PrintExpression(context.conjunctiveExpr())})";
 			}
-
-			return $"({result})";
 		}
 
 		string PrintExpression(SwiftParser.ConjunctiveExprContext context)
 		{
-			string result;
-
 			if(context.conjunctiveExpr() == null) {
-				result = PrintExpression(context.comparativeExpr());
+				return PrintExpression(context.comparativeExpr());
 			}
 			else {
-				result = PrintExpression(context.conjunctiveExpr()) + "&&" + PrintExpression(context.comparativeExpr());
+				return $"{PrintExpression(context.conjunctiveExpr())} && {PrintExpression(context.comparativeExpr())}";
 			}
-
-			return $"({result})";
 		}
 
 		string PrintExpression(SwiftParser.ComparativeExprContext context)
 		{
-			string result;
-
 			if(context.additiveExpr().Count() == 1) {
-				result = PrintExpression(context.additiveExpr()[0]);
+				return PrintExpression(context.additiveExpr()[0]);
 			}
 			else if(context.children[1].GetText() == "===") {
-				result = $"CompareWithTypes({PrintExpression(context.additiveExpr()[0])}," +
+				return $"CompareWithTypes({PrintExpression(context.additiveExpr()[0])}," +
 					$"{PrintExpression(context.additiveExpr()[1])})";
 			}
 			else if(context.children[1].GetText() == "!==") {
-				result = $"!CompareWithTypes({PrintExpression(context.additiveExpr()[0])}," +
+				return $"!CompareWithTypes({PrintExpression(context.additiveExpr()[0])}," +
 					$"{PrintExpression(context.additiveExpr()[1])})";
 			}
 			else if(context.children[1].GetText() == "<") {
-				result = $"LessThanEvenForStrings({PrintExpression(context.additiveExpr()[0])}," +
+				return $"LessThanEvenForStrings({PrintExpression(context.additiveExpr()[0])}," +
 					$"{PrintExpression(context.additiveExpr()[1])})";
 			}
 			else if(context.children[1].GetText() == "<=") {
-				result = $"!GreaterThanEvenForStrings({PrintExpression(context.additiveExpr()[0])}," +
+				return $"!GreaterThanEvenForStrings({PrintExpression(context.additiveExpr()[0])}," +
 					$"{PrintExpression(context.additiveExpr()[1])})";
 			}
 			else if(context.children[1].GetText() == ">") {
-				result = $"GreaterThanEvenForStrings({PrintExpression(context.additiveExpr()[0])}," +
+				return $"GreaterThanEvenForStrings({PrintExpression(context.additiveExpr()[0])}," +
 					$"{PrintExpression(context.additiveExpr()[1])})";
 			}
 			else if(context.children[1].GetText() == ">=") {
-				result = $"!LessThanEvenForStrings({PrintExpression(context.additiveExpr()[0])}," +
+				return $"!LessThanEvenForStrings({PrintExpression(context.additiveExpr()[0])}," +
 					$"{PrintExpression(context.additiveExpr()[1])})";
 			}
 			else {
-				result = PrintExpression(context.additiveExpr()[0])
-					+ context.children[1].GetText() + PrintExpression(context.additiveExpr()[1]);
+				return $"{PrintExpression(context.additiveExpr()[0])}"
+					+ $" {context.children[1].GetText()} {PrintExpression(context.additiveExpr()[1])}";
 			}
-
-			return $"({result})";
 		}
 
 		string PrintExpression(SwiftParser.AdditiveExprContext context)
 		{
-			string result;
-
 			if(context.additiveExpr() == null) {
-				result = PrintExpression(context.multiplicativeExpr());
+				return PrintExpression(context.multiplicativeExpr());
 			}
 			else {
-				result = PrintExpression(context.additiveExpr())
-					+ context.children[1].GetText() + PrintExpression(context.multiplicativeExpr());
+				return $"({PrintExpression(context.additiveExpr())}"
+					+ $" {context.children[1].GetText()} {PrintExpression(context.multiplicativeExpr())})";
 			}
-
-			return $"({result})";
 		}
 
 		string PrintExpression(SwiftParser.MultiplicativeExprContext context)
 		{
-			string result;
-
 			if(context.multiplicativeExpr() == null) {
-				result = PrintExpression(context.unaryExpr());
+				return PrintExpression(context.unaryExpr());
 			}
 			else {
-				result = PrintExpression(context.multiplicativeExpr())
-					+ context.children[1].GetText() + PrintExpression(context.unaryExpr());
+				return $"({PrintExpression(context.multiplicativeExpr())}"
+					+ $" {context.children[1].GetText()} {PrintExpression(context.unaryExpr())})";
 			}
-
-			return $"({result})";
 		}
 
 		string PrintExpression(SwiftParser.UnaryExprContext context)
 		{
-			string result;
-
 			if(context.ChildCount == 1) {
-				result = PrintExpression(context.primaryExpr());
+				return PrintExpression(context.primaryExpr());
 			}
 			else {
-				result = "!" + PrintExpression(context.primaryExpr());
+				return $"(!{PrintExpression(context.primaryExpr())})";
 			}
-
-			return $"({result})";
 		}
 
 		string PrintExpression(SwiftParser.PrimaryExprContext context)
 		{
 			if(context.expression() != null) {
-				return PrintExpression(context.expression());
+				return $"({PrintExpression(context.expression())})";
 			}
 			else if(context.ID() != null && context.primaryExpr() != null) {
-				return $"{PrintExpression(context.primaryExpr())}.{EscapeId(context.ID().GetText())}";
+				return $"({PrintExpression(context.primaryExpr())}.{EscapeId(context.ID().GetText())})";
 			}
 			else if(context.ID() != null && context.ChildCount == 3) {
-				return $"new {EscapeId(context.ID().GetText())}()";
+				return $"(new {EscapeId(context.ID().GetText())}())";
 			}
 			else if(context.ID() != null) {
 				return EscapeId(context.ID().GetText());
 			}
-			else {
+			else { // Literals
 				return context.GetText();
 			}
 		}

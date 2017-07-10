@@ -18,16 +18,16 @@ codeBlock
     ;
 
 statements
-    : (statement ';'?)+
+    : (statement)+
     ;
 
 statement
-    : loopStmt
-    | breakStmt
-    | variableDeclStmt
+    : loopStmt ';'?
+    | breakStmt ';'?
+    | variableDeclStmt ';'?
     | classDeclStmt
-    | printStmt
-    | expression
+    | printStmt ';'?
+    | expression ';'?
     ;
 
 loopStmt

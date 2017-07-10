@@ -41,7 +41,7 @@
     <Compile Include="SwiftLexer.cs" />
     <Compile Include="SwiftListener.cs" />
     <Compile Include="SwiftParser.cs" />
-    <Compile Include="SwiftConcreteListener.cs" />
+    <Compile Include="SwiftMainListener.cs" />
     <Compile Include="SwiftStatementPlacementCheckListener.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

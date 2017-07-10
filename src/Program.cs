@@ -52,7 +52,7 @@ namespace SwiftTranslator
 				Environment.Exit(1);
 			}
 
-			pastwk.Walk(new SwiftConcreteListener(args[1]), tree);
+			pastwk.Walk(new SwiftMainListener(args[1]), tree);
 		}
 	}
 }

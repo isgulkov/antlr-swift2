@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace SwiftTranslator
 {
-	public class SwiftConcreteListener : SwiftBaseListener
+	public class SwiftMainListener : SwiftBaseListener
 	{
 		readonly string OutputFilename;
 		StreamWriter OutputWriter;
@@ -13,7 +13,7 @@ namespace SwiftTranslator
 
 		bool InClass = false;
 
-		public SwiftConcreteListener(string outputFilename)
+		public SwiftMainListener(string outputFilename)
 		{
 			OutputFilename = outputFilename;
 
